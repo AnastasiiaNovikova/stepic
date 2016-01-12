@@ -1,6 +1,7 @@
 n = int(input())
 a = list(map(int, input().split(" ")))
 b = list(map(int, input().split(" ")))
+b_orig = b[:]
 
 max_a = a[0]
 for i in range(1, len(b)):
@@ -24,7 +25,7 @@ for i in range(0, len(b)):
         max_index_a = i
 
 max_index_b = max_index_a
-while max_index_b + 1 < len(b) and b[max_index_b+1] == b[max_index_a]:
+while b_orig[max_index_b] != b[max_index_a]:
     max_index_b += 1
 
 print(max_index_a, max_index_b)
