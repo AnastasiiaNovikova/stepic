@@ -2,7 +2,7 @@
 #include <iostream>
 #include <cassert>
 
-using std::vector;
+using namespace std;
 
 class Heap {
 public:
@@ -25,6 +25,15 @@ public:
 			siftDown(0);
 		
 		return result;
+	}
+	
+	int max() {
+		assert(!a.empty());	
+		return a[0];
+	}
+	
+	int size() {
+		return a.size();
 	}
 private:
 	void siftDown(int i) {
@@ -64,11 +73,40 @@ private:
 
 int main() {
 	Heap h;
-	h.add(10);
-	h.add(11);
-	h.add(14);
-	h.add(3);
 	
-	std::cout << "Max: " << h.get_max() << std::endl;
+	int n, k, x;
+	cin >> n;
+	for(int i=0; i< n; ++i) {
+		cin >> x;
+		h.add(x);
+	}
+	cin >> k;
+	
+	int result = 0;
+	
+	while(h.size() > 0)
+	{
+		int sum = 0;
+		vector<int> elements;
+		while(sum<=k) {
+			if(h.size() == 0)
+				break;
+			if (sum + h.max() <= k) {
+				elements.push_back(h.get_max());
+				sum += elements.back();
+			}
+			else
+				break;
+		}
+		
+		for(int i=0;i<elements.size(); ++i) {
+			if(elements[i] != 1)
+				h.add(elements[i]/2);
+		}
+		
+		++result;
+	}
+	
+	std::cout << result << std::endl;
 	return 0;
 }
