@@ -6,7 +6,7 @@
 using namespace std;
 
 template<class RandomIt>
-void selection_sort(RandomIt first, RandomIt last) {
+void insertion_sort(RandomIt first, RandomIt last) {
     RandomIt current = first+1;
     while(current < last) {
         auto temp = *current;
@@ -20,8 +20,10 @@ void selection_sort(RandomIt first, RandomIt last) {
 
 int main()
 {
-    vector<int> A {4, 2, 1, 3, 5};
-    selection_sort(A.begin(), A.end());
+    vector<int> A;
+    copy(istream_iterator<int>(cin), istream_iterator<int>(), back_inserter(A));
+
+    insertion_sort(A.begin(), A.end());
     
     copy(A.begin(), A.end(), ostream_iterator<int>(std::cout, " "));
     cout << endl;
