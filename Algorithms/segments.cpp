@@ -4,41 +4,28 @@
 
 using namespace std;
 
-struct Segment {
-    int x1,x2;
-
-    Segment(int x1, int x2): x1(x1), x2(x2) {}
-
-    bool operator<(const Segment& that) const {
-        if(x1 == that.x1)
-            return x2 < that.x2;
-        return x1 < that.x1;
-    }
-};
-
 int main() {
-    int N;
-    vector<Segment> segments;
+    long N;
+    vector<pair<int,bool>> segments;
 
     cin >> N;
-    for(int i=0; i<N; ++i)
+    for(long i=0; i<N; ++i)
     {
-        int x1,x2;
+        long x1,x2;
         cin >> x1 >> x2;
-        segments.emplace_back(x1,x2);
+        segments.emplace_back(x1,false);
+		segments.emplace_back(x2,true);
     }
     
     sort(segments.begin(), segments.end());
     
-    int sum = 0;
-    for(int i=0; i<segments.size()-1; ++i)
+    long count = 1;
+	long long sum = 0;
+    for(long i=1; i<segments.size(); ++i)
     {
-        if(segments[i].x1 < segments[i+1].x1) {
-            sum += min(segments[i].x2, segments[i+1].x1) - segments[i].x1;
-        }
-        segments[i+1].x1 = max(segments[i].x2, segments[i+1].x1);
-    }
-    sum += (segments[segments.size()-1].x2 - segments[segments.size()-1].x1 );
+		if( count == 1) sum+= (segments[i].first - segments[i-1].first);
+		segments[i].second ? count-- : count++;
+	}
     cout << sum << endl;
     
     return 0;
