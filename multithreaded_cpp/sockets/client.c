@@ -7,8 +7,8 @@
 #include <string.h>
 
 int main(int argc, char** argv) {
-    if (argc < 3) {
-        printf("Usage: client hostname port\n");
+    if (argc < 4) {
+        printf("Usage: client hostname port message\n");
         exit(0);
     }
 
@@ -37,4 +37,14 @@ int main(int argc, char** argv) {
         exit(1);
     }
 
+    char buffer[1024];
+    send(sock, argv[3], strlen(argv[3]), MSG_NOSIGNAL);
+    ssize_t count = recv(sock, buffer, sizeof(buffer), MSG_NOSIGNAL);
+
+    buffer[count] = '\0';
+    printf("%s\n", buffer);
+
+    shutdown(sock, SHUT_RDWR);
+
+    return 0;
 }
