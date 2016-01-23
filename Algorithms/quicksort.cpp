@@ -9,12 +9,29 @@ RandomIt partition(RandomIt first, RandomIt last) {
 		return first;
 	}
 	
-	auto pivot = *first;
+	auto pivot = std::prev(last);
+	auto mid = first;
+	std::advance(mid, std::distance(first,last)/2);
+	
+	if (*pivot > *first && *pivot > *mid) {
+		if (*first > *mid)
+			pivot = first;
+		else
+			pivot = mid;
+	}
+	else if (*pivot < *first && *pivot < *mid) {
+		if (*first < *mid)
+			pivot = first;
+		else
+			pivot = mid;
+	}
+	
+	std::swap(*first, *pivot);
 	
 	auto i=std::next(first), j = std::prev(last);
 	while ( i <= j ) {
-		while(i < last && *i <= pivot) ++i;
-		while(*j > pivot) --j;
+		while(i < last && *i <= *first) ++i;
+		while(*j > *first) --j;
 		if( i < j )
 			std::swap( *(i++), *(j--) );
 	}
