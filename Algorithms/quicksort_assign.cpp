@@ -2,6 +2,7 @@
 #include <iterator>
 #include <algorithm>
 #include <vector>
+#include <random>
 
 
 template<class RandomIt>
@@ -41,8 +42,7 @@ RandomIt partition(RandomIt first, RandomIt last) {
     }
     
     auto pivot = std::prev(last);
-    auto mid = first;
-    std::advance(mid, (last - first)/2);
+    auto mid = first + (last - first)/2;
     
     if (*pivot > *first && *pivot > *mid) {
         if (*first > *mid)
@@ -90,14 +90,17 @@ void quick_sort(RandomIt first, RandomIt last) {
 }
 
 int main() {
-    std::vector<long> a {std::istream_iterator<long>(std::cin), 
-        std::istream_iterator<long>() };
+    std::ios_base::sync_with_stdio(false);
+    
+    std::vector<long> a;
+    a.reserve(1*1000*1000);
+    a.assign(std::istream_iterator<long>(std::cin), std::istream_iterator<long>());
         
-        quick_sort(a.begin(), a.end());
-        
-        unsigned long count = 1;
-        std::copy_if(a.begin(), a.end(), std::ostream_iterator<long>(std::cout, " "),
-                     [&count](long) { return !(count++ % 10); } );
-        
-        return 0;
+    quick_sort(a.begin(), a.end());
+    
+    unsigned long count = 1;
+    std::copy_if(a.begin(), a.end(), std::ostream_iterator<long>(std::cout, " "),
+                    [&count](long) { return !(count++ % 10); } );
+    
+    return 0;
 }
