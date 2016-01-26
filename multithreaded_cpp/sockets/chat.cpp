@@ -80,6 +80,7 @@ void server(const std::string& address, const uint16_t port, const std::string& 
                 int sock = accept(msock, 0, 0);
                 set_nonblock(sock);
                 struct epoll_event event;
+                sockets.insert(sock);
                 event.data.fd = sock;
                 event.events = EPOLLIN;
                 epoll_ctl(epoll, EPOLL_CTL_ADD, sock, &event);
@@ -99,6 +100,7 @@ void server(const std::string& address, const uint16_t port, const std::string& 
                 if((recvSize == 0) && (errno != EAGAIN)) {
                     shutdown(events[i].data.fd, SHUT_RDWR);
                     close(events[i].data.fd);
+                    sockets.erase(events[i].data.fd);
                     //epoll_ctl(epoll, EPOLL_CTL_DEL, events[i].data.fd, NULL);
                 } else if(recvSize > 0) {
                     buffer[recvSize] = '\0';
@@ -143,6 +145,10 @@ void client(const std::string& address, const uint16_t port, const std::string& 
     event.data.fd = STDIN_FILENO;
     event.events = EPOLLIN;
     epoll_ctl(epoll, EPOLL_CTL_ADD, STDIN_FILENO, &event);
+
+    std::cout << "Connected to " << address << std::endl;
+    std::string message = nickname + " connected!";
+    send(msock, message.c_str(), message.size(), MSG_NOSIGNAL);
     
     while(true) {
         struct epoll_event events[MAX_EVENTS];
