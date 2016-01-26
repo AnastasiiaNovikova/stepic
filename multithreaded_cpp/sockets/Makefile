@@ -1,4 +1,4 @@
-all: server client select poll epoll
+all: server client select poll epoll chat
 server:
 	gcc -o server server.c
 client:
@@ -9,5 +9,7 @@ poll:
 	g++ -std=c++11 -o poll poll.cpp
 epoll:
 	g++ -std=c++11 -o epoll epoll.cpp
+chat:
+	g++ -std=c++11 -o chat chat.cpp
 clean:
-	rm -rf server client select poll epoll
+	rm -rf server client select poll epoll chat
