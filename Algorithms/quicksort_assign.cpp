@@ -79,8 +79,14 @@ void quick_sort_int(RandomIt first, RandomIt last) {
     
     while(first < last) {
         auto part = partition(first, last);
-        if (part > first) quick_sort_int(first, part);
-        first = std::next(part);
+        
+        if(part-first < last-part) {
+            quick_sort_int(first, part);
+            first = std::next(part);
+        } else {
+            quick_sort_int(part+1, last);
+            last = part;
+        }
     }
 }
 
