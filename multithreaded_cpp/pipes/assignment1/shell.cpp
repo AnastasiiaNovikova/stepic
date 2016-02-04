@@ -49,30 +49,30 @@ void execute(const cmd_list& lst) {
                     close(STDIN_FILENO);
                 dup2(p_out, STDIN_FILENO);
                 dup2(pfd[1], STDOUT_FILENO);
+                close(p_out);
                 close(pfd[0]);
                 close(pfd[1]);
                 execvp(params[0],params);
             }
         } else {
-            if(!fork()) {
             if (p_out != STDIN_FILENO)
                 close(STDIN_FILENO);
             dup2(p_out, STDIN_FILENO);
+            close(p_out);
             close(pfd[0]);
             close(pfd[1]);
             execvp(params[0],params);
-            }
         }
         
         for(int i=0; i< cmd.size(); ++i)
             free(params[i]);
         delete params;
         p_out = pfd[0];
+        close(pfd[1]);
     }
 
     int status;
     while(waitpid(-1, &status, WNOHANG) != -1);
-
 }
 
 int main() {
