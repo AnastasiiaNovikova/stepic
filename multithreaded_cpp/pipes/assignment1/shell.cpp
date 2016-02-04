@@ -54,7 +54,7 @@ void execute(const cmd_list& lst) {
                 execvp(params[0],params);
             }
         } else {
-            if (!fork()) {
+            if(!fork()) {
             if (p_out != STDIN_FILENO)
                 close(STDIN_FILENO);
             dup2(p_out, STDIN_FILENO);
@@ -69,6 +69,10 @@ void execute(const cmd_list& lst) {
         delete params;
         p_out = pfd[0];
     }
+
+    int status;
+    while(waitpid(-1, &status, WNOHANG) != -1);
+
 }
 
 int main() {
