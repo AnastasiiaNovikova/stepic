@@ -67,7 +67,7 @@ private:
         
         if( key < root->key )
             return erase_internal(root->left, key);
-        else if( key < root->key )
+        else if( key > root->key )
             return erase_internal(root->right, key);
         
         return make_pair(true, delete_node(root));
@@ -79,13 +79,15 @@ private:
             Node *parent = node->parent;
             delete node;
             node = right;
-            node->parent = parent;
+            if (node)
+                node->parent = parent;
         } else if ( !node->right ) {
             Node *left = node->left;
             Node *parent = node->parent;
             delete node;
             node = left;
-            node->parent = parent;
+            if (node)
+                node->parent = parent;
         } else {
             Node* min = node->right;
             while( min->left )
