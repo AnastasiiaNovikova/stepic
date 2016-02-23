@@ -1,5 +1,7 @@
-all: mpi
+all: mpi messages
 mpi:
 	mpicc -o mpi mpi.c
+messages:
+	mpicc -o messages messages.c
 clean:
-	mpi
+	rm -rf mpi messages
